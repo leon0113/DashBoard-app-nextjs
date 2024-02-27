@@ -16,7 +16,7 @@ export default function Home() {
         {/* left side  */}
         <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-5 py-10 md:w-2/5 md:px-20">
           <p className="text-xl text-gray-800 md:text-3xl md:leading-normal"><strong>Welcome to Acme.</strong> This is the example for the Next.js Learn Course, brought to you by Vercel.</p>
-          <Link href={'/login'} className='bg-blue-500 flex items-center gap-5 self-start rounded-lg px-6 py-3 text-sm text-white font-medium transition-colors hover:bg-blue-400 md:text-base'>Log in <FaLongArrowAltRight className='w-5' /></Link>
+          <Link href={'/login'} className='bg-blue-500 flex items-center gap-0 self-start rounded-lg px-6 py-3 text-sm text-white font-medium transition-colors hover:bg-blue-400 md:text-base'>Log in <FaLongArrowAltRight className='w-10 h-5' /></Link>
         </div>
         {/* right side  */}
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
