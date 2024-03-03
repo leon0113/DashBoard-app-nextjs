@@ -183,7 +183,7 @@ const invoices = [
     },
 ];
 
-const revenue = [
+const revenues = [
     { month: 'Jan', revenue: 2000 },
     { month: 'Feb', revenue: 1800 },
     { month: 'Mar', revenue: 2200 },
@@ -202,5 +202,5 @@ module.exports = {
     users,
     customers,
     invoices,
-    revenue,
+    revenues,
 };

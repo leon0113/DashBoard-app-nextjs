@@ -1,6 +1,6 @@
 const { db } = require("@vercel/postgres")
 const bcrypt = require("bcrypt");
-const { users, invoices, customers } = require("../app/lib/placeholder-data");
+const { users, invoices, customers, revenues } = require("../app/lib/placeholder-data");
 
 
 //seed users
@@ -118,7 +118,40 @@ async function seedCustomers(client) {
 }
 
 
+async function seedRevenues(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
+        //create invoices table
+        const createRevenueTable = await client.sql`
+     CREATE TABLE IF NOT EXISTS revenues (
+           month VARCHAR(4) NOT NULL UNIQUE,
+           revenue INT NOT NULL
+     );
+     `;
+        console.log('created revenue table');
+
+        const insertedRevenues = await Promise.all(
+            revenues.map((revenue) => {
+                return client.sql`
+            INSERT INTO revenues(month, revenue)
+            VALUES(${revenue.month}, ${revenue.revenue})
+            ON CONFLICT (month) DO NOTHING;
+            `;
+            })
+        )
+        console.log(`Seeded ${insertedRevenues.length} revenues`);
+
+        return {
+            createRevenueTable,
+            insertedRevenues
+        }
+
+
+    } catch (error) {
+        console.log("Failed to seed invoices ", error);
+    }
+}
 
 
 async function main() {
@@ -126,6 +159,7 @@ async function main() {
     await seedUsers(client)
     await seedInvoices(client)
     await seedCustomers(client)
+    await seedRevenues(client)
 
     await client.end();
 }
