@@ -1,6 +1,6 @@
 const { db } = require("@vercel/postgres")
 const bcrypt = require("bcrypt");
-const { users, invoices } = require("../app/lib/placeholder-data");
+const { users, invoices, customers } = require("../app/lib/placeholder-data");
 
 
 //seed users
@@ -80,12 +80,52 @@ async function seedInvoices(client) {
     }
 }
 
+async function seedCustomers(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+        //create invoices table
+        const createCustomerTable = await client.sql`
+     CREATE TABLE IF NOT EXISTS customers (
+            id UUID DEFAULT uuid_generate_V4() PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email TEXT NOT NULL,
+            image_url VARCHAR(255) NOT NULL
+     );
+     `;
+        console.log('created Customers table');
+
+        const insertedCustomers = await Promise.all(
+            customers.map((customer) => {
+                return client.sql`
+            INSERT INTO customers(id, name, email, image_url)
+            VALUES(${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
+            ON CONFLICT (id) DO NOTHING;
+            `;
+            })
+        )
+        console.log(`Seeded ${insertedCustomers.length} customers`);
+
+        return {
+            createCustomerTable,
+            insertedCustomers
+        }
+
+
+    } catch (error) {
+        console.log("Failed to seed invoices ", error);
+    }
+}
+
+
+
 
 
 async function main() {
     const client = await db.connect();
     await seedUsers(client)
     await seedInvoices(client)
+    await seedCustomers(client)
 
     await client.end();
 }
