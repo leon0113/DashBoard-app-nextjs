@@ -17,15 +17,18 @@ export const formateDate = (dateStr: string, locale: string = 'en-US') => {
 }
 
 
-export const generateAxis = (revenue: Revenue[]) => {
+export const generateYAxis = (revenues: Revenue[]) => {
     const yAxisLabel = [];
-    const highestRecord = Math.max(...revenue.map((month: any) => month.revenue));
-    const topLebel = Math.ceil(highestRecord / 1000);
+    const highestRecord = Math.max(...revenues.map((revenue: Revenue) => revenue.revenue));
+    // console.log(highestRecord); // 4800 
+    const topLebel = Math.ceil(highestRecord / 1000) * 1000;
+    // console.log(topLebel); // 5000
 
     for (let i = topLebel; i >= 0; i -= 1000) {
+        // console.log(i); 5000 4000 3000 2000 1000 0
         yAxisLabel.push(`$${i / 1000}k`);
     }
-
+    // console.log(yAxisLabel);
     return { yAxisLabel, topLebel };
 }
 

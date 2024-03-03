@@ -3,3 +3,8 @@
 @tailwind utilities;
 
 
+@media screen and (min-width: 768px) {
+    .custom-grid-column{
+        grid-template-columns: repeat(13, minmax(0, 1fr));
+    }
+}
