@@ -38,6 +38,9 @@ export default async function Revenue() {
                     }
 
                 </div>
+                <div className="pb-2 pt-6">
+                    <p className="ml-2 text-sm text-gray-500">Last 12 months</p>
+                </div>
             </div>
         </div>
     )
