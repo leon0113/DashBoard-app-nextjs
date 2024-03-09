@@ -1,8 +1,10 @@
 import { abel } from '../ui/fonts'
 import Revenue from '../ui/dashboard/Revenue'
 import Invoices from '../ui/dashboard/Invoices'
+import { fetchCardData } from '../lib/data'
 
 export default function Dashboard() {
+    const card = fetchCardData();
     return (
         <main>
             <div className={`${abel.className} mb-4 text-xl md:text-2xl`}>Dashboard</div>
@@ -19,6 +21,7 @@ export default function Dashboard() {
                 <Revenue />
                 <Invoices />
             </div>
+
         </main>
     )
 }

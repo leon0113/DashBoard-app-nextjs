@@ -25,7 +25,7 @@ export const fetchInvoices = async () => {
         LIMIT 5;
 
         `;
-        console.log(data.rows);
+        // console.log(data.rows);
         const latestInvoices = data.rows.map((invoice) => ({
             ...invoice,
             amount: formatCurrency(invoice.amount)
@@ -34,5 +34,36 @@ export const fetchInvoices = async () => {
     } catch (error) {
         console.error(error);
         throw new Error("Failed to fetch invoice data")
+    }
+}
+
+export const fetchCardData = async () => {
+    try {
+        const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
+        const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
+        const invoiceStatusPromise = sql`SELECT
+        SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
+        SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
+        FROM invoices
+        `;
+        const data = await Promise.all([
+            invoiceCountPromise,
+            customerCountPromise,
+            invoiceStatusPromise
+        ]);
+        // console.log(data[2].rows[0].pending);
+        const numberOfInvoices = Number(data[0].rows[0].count ?? 0);
+        const numberOfCustomers = Number(data[1].rows[0].count ?? 0);
+        const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? 0);
+        const totalPendingInvoices = Number(data[2].rows[0].pending ?? 0);
+        return {
+            numberOfInvoices,
+            numberOfCustomers,
+            totalPaidInvoices,
+            totalPendingInvoices
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch Card data")
     }
 }
