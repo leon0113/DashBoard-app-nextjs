@@ -1,5 +1,6 @@
 import { abel } from '../ui/fonts'
 import Revenue from '../ui/dashboard/Revenue'
+import Invoices from '../ui/dashboard/Invoices'
 
 export default function Dashboard() {
     return (
@@ -16,7 +17,7 @@ export default function Dashboard() {
             {/* Recent revenue and Latest Invoices */}
             <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
                 <Revenue />
-                <div className=''>Latest Invoices</div>
+                <Invoices />
             </div>
         </main>
     )
